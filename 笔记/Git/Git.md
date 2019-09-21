@@ -245,8 +245,16 @@ $ git log --pretty=oneline
 | --until,--before | 仅显示指定时间之前的提交                |
 | --author         | 仅显示指定作者提交的提交                |
 | --committer      | 仅显示指定提交者相关的提交              |
+| --no-merges      | 仅显示未合并的提交                      |
 | --grep           | 仅显示指定关键字的提交                  |
 | -S               | 仅显示添加或移除了某个关键字的提交      |
+
+一个完整的例子：
+查找 2019 年 8 月份 blithe6317 提交的关于 函数 test 的提交内容
+
+```shell
+$ git log --since="2019-8-01" --before="2019-9-01" -S"function test"
+```
 
 #### fomat
 
