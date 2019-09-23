@@ -259,7 +259,7 @@ $ git log --pretty=oneline
 查找 2019 年 8 月份 blithe6317 提交的关于 函数 test 的提交内容
 
 ```shell
-$ git log --since="2019-8-01" --before="2019-9-01" -S"function test"
+$ git log --since="2019-8-01" --before="2019-9-01" --author="blithe6317" -S"function test"
 ```
 
 #### fomat
@@ -294,4 +294,28 @@ format 常用选项说明
 
 在任何一个阶段我们都有可能想要做某些撤销操作，这里介绍几个常见的撤销操作。
 
-#### 重新提交
+#### 取消暂存的文件
+
+我们在操作中有时候修改了两个文件，但是我们只想暂存其中一个文件，在执行时，却不小心输入了 git add . 。此时如何取消其中一个暂存呢？
+输入 git status 时，也有提示：use "git reset HEAD <file>..." to unstage
+
+```shell
+$ git reset HEAD a.js
+```
+
+这个命令只是取消了文件的暂存，并不会修改文件，如何撤销对文件的修改呢？
+
+#### 撤销对文件的修改
+
+执行了上面的命令之后，现在 a.js 文件是处于未暂存状态，执行 git status ,会有两个提示：
+
+1. use "git add <file> ..." to update what will be committed // 更新将要提交的内容
+2. use "git checkout -- <file>..." to discard changes in working directory // 放弃工作目录中的修改
+
+```shell
+git checkout -- <file>...
+```
+
+该命令是一个比较危险的命令，它会抛弃你上一次暂存时到现在的所有更改。除非你是真的不想要这些修改了。对于 Git 而言大多数的内容都是可以恢复的，但是，没有提交的内容被删除了很有可能再也找不到了。
+
+### 远程仓库的使用
