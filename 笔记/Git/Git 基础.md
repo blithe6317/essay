@@ -319,3 +319,26 @@ git checkout -- <file>...
 该命令是一个比较危险的命令，它会抛弃你上一次暂存时到现在的所有更改。除非你是真的不想要这些修改了。对于 Git 而言大多数的内容都是可以恢复的，但是，没有提交的内容被删除了很有可能再也找不到了。
 
 ### 远程仓库的使用
+
+```shell
+# 添加远程仓库   shortname 仓库名称简写  url 地址
+# 当你本地写了一个项目，想把它提交到远程仓库， 先在远程仓库中新建一个项目，用新建项目的git url来执行当前命令
+$ git remote add <shortname> <url>
+
+# 拉取本地没有的数据
+# git fetch 不会自动合并代码，需要自己手动合并  git pull 拉取数据后会尝试合并，无法自动合并时才会提示需要手动合并
+$ git fetch [remote-name]
+$ git pull
+
+# 推送数据
+$ git push [remote-name] [branch-name]
+
+# 查看远程仓库
+$ git remote show [remote-name]
+
+# 远程仓库重命名
+$ git remote rename <curr-name> <new-name>
+
+# 远程仓库移除
+$ git remote rm <remove-name> 
+```
