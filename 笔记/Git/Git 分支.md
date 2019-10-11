@@ -83,8 +83,6 @@ $ git checkout master
 
 ![历史分叉](./git-9.png)
 
-git log --oneline --decorate --graph --all
-
 ### 分支合并
 
 假如在 testing 分支上有一个 bug 需要修复，执行 git checkout testing 切换分支，在 testing 分支上进行 bug 修复，然后提交。
@@ -217,8 +215,113 @@ $ git branch -d <branch-name>
 | git branch --merged    | 查看哪些分支已经合并到当前分支                               |
 | git branch --no-merged | 查看哪些分支没有合并到当前分支                               |
 
-### 分支开发工作流
+### 变基
 
-#### 长期分支
+#### 基础变基
 
-#### 特性分支
+在分支合并里说过分支会形成分叉式分支，如下图：
+
+![分叉式分支简化](./git-13.png)
+
+合并 testing 和 master 分支我们用了 merge 命令。它会把两个分支的最后一次快照（C3 和 C4）以及两个分支最近的共同祖先（C2）进行三方合并，合并的结果是生成一个新的快照。
+
+在 Git 中还有另一种方法来合并：提取 C4 中的修改，然后在 C3 的基础上应用一次。这种方法就叫做变基（rebase）。可以使用 rebase 命令，将提交到某一分支上的所有修改都移到另一个分支上。在这个例子中执行：
+
+```shell
+$ git checkout testing
+$ git rebase master
+
+First, rewinding head to replay your work on top of it...
+Applying: testing 分支
+
+```
+
+![变基操作](./git-14.png)
+
+它的原理是首先找到这两个分支（即当前分支 testing，变基操作的目标基底分支 master）的最近共同祖先 C2，然后对比当前分支相对于该祖先的历次提交，提取相应的修改，并存为临时文件，然后将当前分支指向基底 C3，最后以此将之前另存为临时文件的修改依序应用。
+
+现在回到 master 分支，进行一次快进式合并
+
+```shell
+$ git checkout master
+$ git merge testing
+```
+
+![变基操作后快进式合并](./git-15.png)
+
+这种变基方法和上面的合并结果是相同的，但是变基使得提交历史更加整洁。我们查看历史记录既可以发现历史记录中没有出现分叉。
+
+```shell
+$ git log --oneline --decorate --graph --all
+
+* dc5ff66 (HEAD -> master, testing) testing 分支
+* d8f0d65 a.txt 提交
+* 98bf158 (origin/bug207, bug207) bug207d的修改
+*   5c3b864 (origin/master, origin/HEAD) 合并后的提交
+|\
+| * b7a7693 testing  a.txt
+| * e8f9981 二次提交
+* | a9e0242 切回 master 后 的一次提交
+* | e1ad007 二次提交
+|/
+* 71ee334 add a,b,c
+* ca82532 test
+* dbab285 00
+* e35e70c Initial commit from Create React App
+
+```
+
+一般我们这样做的目的是为了确保在向远程分支推送的时候能够保证提交历史整洁。
+
+#### 复杂变基
+
+创建一个分支 P1 ，添加一些修改，提交了 C3 和 C4。然后在 C3 上创建一个分支 P2，在 P2 上做一些修改，提交了 C7 和 C8。切回 master 分支提交了 C5 和 C6,最后回到 P1 分支上提交了 C9。
+
+![复杂变基操作开始](./git-16.png)
+
+现在希望将 P2 分支上的修改合并到 master 分支上，而 P1 分支上的修改暂时不想合并。这时就可以使用 git rebase 命令的 --onto 选项：
+
+```shell
+$ git rebase --onto master P1 P2
+```
+
+以上的命令就是：取出 P2 分支，找到 P2 分支和 P1 分支的共同祖先之后的修改，然后把它们放到 master 分支上。
+
+![复杂变基操作变基](./git-17.png)
+
+然后快进合并 master 分支
+
+```shell
+$ git checkout master
+$ git merge P2
+```
+
+![复杂变基操作变基2](./git-18.png)
+
+然后再把 P1 分支上的修改也整合进来。使用 git rebase [basebranch][topicbranch] 命令可以直接将 P1 分支变基到 master 分支上。
+
+```shell
+$ git rebase master P1
+```
+
+![复杂变基操作变基3](./git-19.png)
+
+再一次快进合并
+
+```shell
+$ git checkout master
+$ git merge P1
+```
+
+到这，就将 P1 和 P2 分支上的所有修改都整合到 master 分支上了，删除 P1 和 P2 分支
+
+```shell
+$ git branch -d P1
+$ git branch -d P2
+```
+
+![复杂变基操作变基4](./git-20.png)
+
+变基存在比较大的风险，特别是远程仓库。所以推荐变基操作只在本地进行。
+
+完
