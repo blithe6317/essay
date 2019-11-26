@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../../笔记/D3/public/d3.v5.js"></script>
+  </head>
+  <body>
+    <svg id="svg" width="300" height="180" style="background-color: #020c20;">
+      <defs>
+        <radialGradient id="f1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+          <stop
+            offset="0%"
+            style="stop-color:rgb(255,255,255);stop-opacity:1"
+          />
+          <stop
+            offset="100%"
+            style="stop-color:rgb(255,255,255);stop-opacity:0"
+          />
+        </radialGradient>
+      </defs>
+    </svg>
+    <script>
+      const maxRadius = 15;
+      const minRadius = 5;
+      const maxCount = 15;
+      let startX = 50;
+      const startY = 100;
+
+      const scaleR = d3
+        .scaleLinear()
+        .range([minRadius, maxRadius])
+        .domain([0, maxCount]);
+
+      const scaleFill = d3
+        .scaleLinear()
+        .range([0.2, 0.99])
+        .domain([0, maxCount]);
+
+      const rData = d3.range(maxCount).map(i => ({ r: scaleR(i) }));
+
+      const g = d3.select("#svg").append("g");
+      g.selectAll("circle")
+        .data(rData)
+        .enter()
+        .append("circle")
+        .style("fill", "url(#f1)")
+        // .attr("filter", "url(#f1)")
+        .attr("r", d => d.r)
+        .attr("cx", d => {
+          return (startX += d.r + 1);
+        })
+        .attr("cy", startY);
+    </script>
+  </body>
+</html>
