@@ -1,5 +1,5 @@
 var map = new BMap.Map("map", { enableMapClick: false });
-const initPoint = [115.725006, 34.404443];
+let initPoint = [115.725006, 34.404443];
 const movePx = 0.00002;
 const maxZoom = 19;
 const minZoom = 16;
@@ -17,12 +17,7 @@ function initMap() {
   map.setMinZoom(minZoom);
   map.setMaxZoom(maxZoom);
 
-  var label = new BMap.Label("point", { offset: new BMap.Size(20, -10) });
-  var marker = new BMap.Marker(point);
-  marker.setLabel(label);
-
-  map.addOverlay(marker);
-  marker.disableDragging();
+  movePoint(point);
   map.addEventListener("click", function() {
     return;
   });
@@ -47,23 +42,9 @@ function addKeyDown(e) {
       initPoint[1] -= k;
       break;
   }
-  var allOverlay = map.getOverlays();
-  for (var i = 0; i < allOverlay.length; i++) {
-    var marker = allOverlay[i];
-    if (marker.getLabel && marker.getLabel().content === "point") {
-      map.removeOverlay(allOverlay[i]);
-    }
-  }
-  var point = new BMap.Point(initPoint[0], initPoint[1]);
-  var centerPoint = new BMap.Point(initPoint[0], initPoint[1] + 0.001);
-  map.setCenter(centerPoint);
 
-  var label = new BMap.Label("point", { offset: new BMap.Size(20, -10) });
-  var marker = new BMap.Marker(point);
-  marker.setLabel(label);
-  marker.disableDragging();
-  map.addOverlay(marker);
-  console.log("point:", point);
+  var point = new BMap.Point(initPoint[0], initPoint[1]);
+  movePoint(point);
 }
 
 function enlarge() {
@@ -100,4 +81,36 @@ function drawBoundary() {
     { strokeColor: "blue", strokeWeight: 2, strokeOpacity: 1 }
   );
   map.addOverlay(polyline);
+}
+
+function goDormitoryI() {
+  initPoint = STORY_DATA.points.dormitoryI;
+  var point = new BMap.Point(initPoint[0], initPoint[1]);
+  movePoint(point);
+}
+
+function goDormitoryY() {
+  initPoint = STORY_DATA.points.dormitoryY;
+  var point = new BMap.Point(initPoint[0], initPoint[1]);
+  movePoint(point);
+}
+
+function goDoorWay() {}
+
+function movePoint(point) {
+  var allOverlay = map.getOverlays();
+  for (var i = 0; i < allOverlay.length; i++) {
+    var marker = allOverlay[i];
+    if (marker.getLabel && marker.getLabel().content === "point") {
+      map.removeOverlay(allOverlay[i]);
+    }
+  }
+
+  var label = new BMap.Label("point", { offset: new BMap.Size(20, -10) });
+  var marker = new BMap.Marker(point);
+  marker.setLabel(label);
+  marker.disableDragging();
+  map.addOverlay(marker);
+
+  map.setCenter(point);
 }

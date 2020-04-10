@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>机器人移动</title>
+    <style>
+      .box {
+      }
+      .h:after {
+        content: " ";
+        clear: both;
+        display: block;
+      }
+      .h {
+        zoom: 1;
+        border-top: 1px solid #ddd;
+        display: table;
+      }
+      .h:last-child {
+        border-bottom: 1px solid #ddd;
+      }
+      .item {
+        width: 40px;
+        height: 40px;
+        border-left: 1px solid #ddd;
+        text-align: center;
+        line-height: 40px;
+        font-size: 14px;
+        float: left;
+      }
+      .item:last-child {
+        border-right: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./index.js"></script>
+  </body>
+</html>

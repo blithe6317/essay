@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>svg</title>
+    <style>
+      .p:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <svg>
+      <g class="p">
+        <circle cx="100" cy="100" r="30"></circle>
+        <circle cx="150" cy="100" r="10"></circle>
+      </g>
+    </svg>
+    <script>
+      var g = document.getElementsByClassName("p")[0];
+      g.addEventListener("mouseover", function() {
+        console.log("mouseover");
+      });
+      g.addEventListener("mouseout", function() {
+        console.log("mouseout");
+      });
+      g.addEventListener("mouseenter", function() {
+        console.log("mouseenter");
+      });
+    </script>
+  </body>
+</html>

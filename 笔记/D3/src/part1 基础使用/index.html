@@ -8,9 +8,106 @@
   </head>
   <body>
     <h2>基础使用</h2>
-    <div id="basic"></div>
+    <div id="basic">
+      <button id="update" onclick="update();">更新</button>
+      <button id="update" onclick="update2();">更新2</button>
+      <div id="container"></div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <defs>
+        <filter id="f1" x="0" y="0" width="200%" height="200%">
+          <feOffset result="offOut" in="SourceGraphic" dx="0" dy="4" />
+          <!-- <feOffset result="offOut" in="SourceGraphic1" dx="0" dy="8" /> -->
+          <!-- <feOffset result="offOut" in="SourceGraphic" dx="0" dy="12" /> -->
+          <!-- <feOffset result="offOut" in="SourceGraphic" dx="0" dy="16" /> -->
+          <feColorMatrix
+            result="matrixOut"
+            in="offOut"
+            type="matrix"
+            values="0.2 0 0 0 0
+                    0 0.2 0 0 0
+                    0 0 0.2 0 0
+                    0 0 0 1 0"
+          />
+          <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="0" />
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+          <feBlend in="SourceGraphic1" in2="blurOut" mode="normal" />
+          <feBlend in="SourceGraphic2" in2="blurOut" mode="normal" />
+          <feBlend in="SourceGraphic3" in2="blurOut" mode="normal" />
+        </filter>
+      </defs>
+      <!-- <rect
+        width="90"
+        height="90"
+        stroke="green"
+        stroke-width="3"
+        fill="yellow"
+        filter="url(#f1)"
+      /> -->
+      <g id="circle"></g>
+    </svg>
     <script src="../../../../Mock/mock.js"></script>
     <script src="../../public/d3.v5.js"></script>
     <script src="./index.js"></script>
+    <script>
+      function update() {
+        // var data = d3.range(parseInt(Math.random() * 10)).map(i => {
+        //   return `名字是${i}`;
+        // });
+        // var items = d3
+        //   .select("#container")
+        //   .selectAll("p")
+        //   .data(data);
+        // items
+        //   .enter()
+        //   .append("p")
+        //   .merge(items)
+        //   .text(d => d);
+        // items.exit().remove();
+        const path = genPath([80, 80], 20);
+        d3.select("#circle")
+
+          .append("path")
+          .attr("d", path)
+          .style("fill", "none")
+          .style("stroke", "#000");
+      }
+
+      function genPath(point, r, gapAngle = 0) {
+        const angle = (Math.PI / 180) * (45 - gapAngle);
+        const x = angle =>
+          point[0] + Math.sin(((2 * Math.PI) / 360) * angle) * r;
+        const y = angle =>
+          point[0] + Math.cos(((2 * Math.PI) / 360) * angle) * r;
+
+        const newArr = d3.range(4).map(i => {
+          const angle = (360 / 4) * i - 45;
+          const startAngle = angle + gapAngle;
+          const endAngle = (360 / 4) * (i + 1) - 45 - gapAngle;
+          return {
+            strat: [x(startAngle), y(startAngle)],
+            end: [x(endAngle), y(endAngle)]
+          };
+        });
+
+        let path = "";
+
+        newArr.forEach(item => {
+          const { strat, end } = item;
+          path += `M ${strat[0]} ${strat[1]} A ${r} ${r} 0 0 0 ${end[0]} ${end[1]} `;
+        });
+
+        return path;
+      }
+
+      function update2() {
+        const path = genPath([80, 80], 25, 10);
+        const items = d3
+          .select("#circle")
+          .select("path")
+          .transition()
+          .attr("d", path);
+      }
+    </script>
   </body>
 </html>

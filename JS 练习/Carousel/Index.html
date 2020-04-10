@@ -22,6 +22,17 @@
         </radialGradient>
       </defs>
     </svg>
+
+    <svg
+      width="300"
+      height="300"
+      style="background-color: #aaa;margin-top:20px;"
+    >
+      <path id="path1" stroke="#fff" stroke-width="3" fill="none"></path>
+      <path id="path2" stroke="red" stroke-width="3" fill="none"></path>
+      <path id="path3" stroke="#fff" stroke-width="3" fill="none"></path>
+      <path id="path4" stroke="red" stroke-width="3" fill="none"></path>
+    </svg>
     <script>
       const maxRadius = 15;
       const minRadius = 5;
@@ -53,6 +64,31 @@
           return (startX += d.r + 1);
         })
         .attr("cy", startY);
+
+      function genPath(center) {
+        const r = 12;
+        const x = Math.sqrt(Math.pow(r, 2) / 2);
+        const start1 = [center[0] + x, center[1] - x];
+        const start2 = [center[0] + x, center[1] + x];
+        const start3 = [center[0] - x, center[1] + x];
+        const start4 = [center[0] - x, center[1] - x];
+        let path1 = `M ${start1[0] + 2} ${start1[1]} A 16 16 0 0 1 ${start2[0] +
+          2} ${start2[1]}`;
+        let path2 = `M ${start2[0]} ${start2[1] + 2} A 16 16 0 0 1 ${
+          start3[0]
+        } ${start3[1] + 2}`;
+        let path3 = `M ${start3[0] - 2} ${start3[1]} A 16 16 0 0 1 ${start4[0] -
+          2} ${start4[1]}`;
+        let path4 = `M ${start4[0]} ${start4[1] - 2} A 16 16 0 0 1 ${
+          start1[0]
+        } ${start1[1] - 2}`;
+
+        document.getElementById("path1").setAttribute("d", path1);
+        document.getElementById("path2").setAttribute("d", path2);
+        document.getElementById("path3").setAttribute("d", path3);
+        document.getElementById("path4").setAttribute("d", path4);
+      }
+      genPath([150, 150]);
     </script>
   </body>
 </html>
