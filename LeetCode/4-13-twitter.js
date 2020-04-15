@@ -37,26 +37,7 @@
 /**
  * Initialize your data structure here.
  */
-const users = [
-  {
-    id: 1,
-    tweet: [
-      {
-        tid: 2,
-        time: 123,
-      },
-    ],
-    followIds: [2],
-  },
-];
 
-const tweets = [
-  {
-    id: 2,
-    userId: 1,
-    time: 123456,
-  },
-];
 var Twitter = function () {
   this.users = [];
   this.tweets = [];
