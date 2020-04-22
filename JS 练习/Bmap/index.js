@@ -1,11 +1,13 @@
 var map = new BMap.Map("map", { enableMapClick: false });
-let initPoint = [115.725006, 34.404443];
+// let initPoint = [115.725006, 34.404443];
+let initPoint = [-82.58080704625851, 11.541670341119943];
+
 const movePx = 0.00002;
 const maxZoom = 19;
-const minZoom = 16;
-let zoom = 18;
+const minZoom = 1;
+let zoom = 5;
 
-$(function() {
+$(function () {
   initMap();
 });
 
@@ -18,7 +20,7 @@ function initMap() {
   map.setMaxZoom(maxZoom);
 
   movePoint(point);
-  map.addEventListener("click", function() {
+  map.addEventListener("click", function () {
     return;
   });
   drawBoundary();
@@ -76,7 +78,7 @@ function drawBoundary() {
       new BMap.Point(115.7310260000019, 34.40662299999992),
       new BMap.Point(115.72686600000058, 34.40648299999992),
       new BMap.Point(115.72678600000056, 34.404343000000004),
-      new BMap.Point(115.72490599999996, 34.40426300000001)
+      new BMap.Point(115.72490599999996, 34.40426300000001),
     ],
     { strokeColor: "blue", strokeWeight: 2, strokeOpacity: 1 }
   );
