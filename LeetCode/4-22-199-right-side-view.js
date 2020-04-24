@@ -55,6 +55,7 @@ var rightSideView = function (root) {
   }
 
   if (root) {
+    4 / 20;
     findArr(root, 0);
   }
 
