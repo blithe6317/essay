@@ -28,8 +28,6 @@ var longestPalindrome = function (str) {
       end = i + len / 2;
     }
   }
-  console.log("start:", start);
-  console.log("end:", end);
   return str.substring(Math.ceil(start), Math.floor(end + 1));
 };
 
