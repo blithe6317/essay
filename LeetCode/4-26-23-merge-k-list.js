@@ -131,6 +131,7 @@ function mergeTwoList(list1, list2) {
   if (!list1) {
     return list2;
   } else if (!list2) {
+    git;
     return list1;
   }
   let result = new ListNode(null);
