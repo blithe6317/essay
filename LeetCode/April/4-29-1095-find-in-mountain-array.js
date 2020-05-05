@@ -69,14 +69,43 @@ function MountainArray(array) {
     return array.length;
   };
 }
+let nums = [0, 1, 2, 4, 2, 1];
+let m = new MountainArray(nums);
 var findInMountainArray = function (target, mountainArr) {
   let { index, value } = getMiddle(mountainArr);
+  let len = mountainArr.length();
   if (target === value) return index;
+  let l = findTarget(target, mountainArr, 0, index);
+  let r = findTarget(target, mountainArr, index, len - 1);
+  if (l >= 0) return l;
+  return r;
 };
 
 var findTarget = function (target, mountainArr, left, right, max) {
   let l = left;
   let r = right;
+  while (l <= r - 1) {
+    let middle = Math.ceil((l + r) / 2);
+    let m = mountainArr.get(middle);
+    let lv = mountainArr.get(l);
+    let rv = mountainArr.get(r);
+    if (target === lv) {
+      return l;
+    }
+    if (target === rv) {
+      return r;
+    }
+    if (target === m) {
+      return middle;
+    }
+    if (l === r - 1) return -1;
+    if (target < m) {
+      r = middle;
+    } else {
+      l = middle;
+    }
+  }
+  return -1;
 };
 
 var getMiddle = function (mountainArr) {
