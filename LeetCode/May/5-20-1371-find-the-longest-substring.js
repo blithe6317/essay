@@ -28,5 +28,21 @@
  */
 
 var findTheLongestSubstring = function (s) {
-  let map = new Map();
+  let res = 0;
+  let state = 0;
+  let vowel = { a: 1, e: 2, i: 4, o: 8, u: 16 };
+  let map = { 0: -1 };
+  for (let i = 0; i < s.length; i++) {
+    let char = s[i];
+    if (vowel[char] !== undefined) {
+      state ^= vowel[char];
+      if (map[state] === undefined) {
+        map[state] = i;
+      }
+    }
+
+    let distance = i - map[state];
+    res = Math.max(res, distance);
+  }
+  return res;
 };

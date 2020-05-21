@@ -23,7 +23,7 @@ var longestPalindrome = function (s) {
       if (isPail(s, i, j)) {
         if (max < j - i + 1) {
           max = j - i + 1;
-          str = s.substr(i, j + 1);
+          str = s.substr(i, j + 1 - i);
         }
       }
     }
@@ -41,4 +41,52 @@ var isPail = (str, left, right) => {
   }
 
   return true;
+};
+
+var longestPalindrome = function (str) {
+  if (str.length <= 1) return str;
+  var start = 0,
+    end = 0;
+  for (let i = 0; i < str.length; i++) {
+    let len1 = expandAroundCenter(str, i, i);
+    let len2 = expandAroundCenter(str, i, i + 1);
+
+    let len = Math.max(len1, len2);
+    if (len > end - start) {
+      start = i - (len - 1) / 2;
+      end = i + len / 2;
+    }
+  }
+  return str.substring(Math.ceil(start), Math.floor(end + 1));
+};
+
+var expandAroundCenter = function (str, left, right) {
+  let l = left;
+  let r = right;
+
+  while (l >= 0 && r < str.length && str.charAt(l) === str.charAt(r)) {
+    l--;
+    r++;
+  }
+
+  return r - l - 1;
+};
+
+var longestPalindrome = function (s) {
+  let max = 0;
+  let str = "";
+  for (let i = 0; i < s.length - max; i++) {
+    max = Math.max(max, center(s, i, i));
+  }
+  return str;
+};
+
+var center = (str, left, right) => {
+  let max = 1;
+  while (left > 0 && right < str.length && str[left] === str[right]) {
+    max = right - left + 1;
+    left--;
+    right++;
+  }
+  return max;
 };
