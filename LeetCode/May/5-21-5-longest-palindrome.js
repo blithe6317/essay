@@ -74,16 +74,23 @@ var expandAroundCenter = function (str, left, right) {
 
 var longestPalindrome = function (s) {
   let max = 0;
-  let str = "";
+  let centerIndex = 0;
   for (let i = 0; i < s.length - max; i++) {
-    max = Math.max(max, center(s, i, i));
+    let len1 = center(s, i, i);
+    let len2 = center(s, i, i + 1);
+    let len = Math.max(len1, len2);
+
+    if (max < len) {
+      centerIndex = i;
+      max = len;
+    }
   }
-  return str;
+  return s.substring();
 };
 
 var center = (str, left, right) => {
   let max = 1;
-  while (left > 0 && right < str.length && str[left] === str[right]) {
+  while (left >= 0 && right < str.length && str[left] === str[right]) {
     max = right - left + 1;
     left--;
     right++;
