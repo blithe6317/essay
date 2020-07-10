@@ -76,6 +76,7 @@ var longestPalindrome = function (s) {
   let max = 0;
   let centerIndex = 0;
   for (let i = 0; i < s.length - max; i++) {
+<<<<<<< Updated upstream
     let len1 = center(s, i, i);
     let len2 = center(s, i, i + 1);
     let len = Math.max(len1, len2);
@@ -83,6 +84,12 @@ var longestPalindrome = function (s) {
     if (max < len) {
       centerIndex = i;
       max = len;
+=======
+    let len = center(s, i, i);
+    if (max < len) {
+      max = j - i + 1;
+      str = s.substr(i, j + 1 - i);
+>>>>>>> Stashed changes
     }
   }
   return s.substring();
